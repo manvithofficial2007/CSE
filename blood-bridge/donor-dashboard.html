@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Donor Dashboard – Blood Bridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="container navbar-inner">
+    <a class="navbar-brand" href="index.html">
+      <span class="brand-icon" aria-hidden="true">🩸</span>
+      Blood Bridge
+    </a>
+    <ul class="navbar-nav">
+      <li><a class="nav-link" href="blood-banks.html">Find Blood</a></li>
+    </ul>
+    <div class="navbar-actions">
+      <span style="font-size:14px; color:var(--color-text-muted);">Hello, <strong id="nav-user-name">Donor</strong></span>
+      <button class="btn btn-ghost btn-sm" onclick="logout('index.html')">Log Out</button>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-overlay" id="nav-overlay">
+  <a class="nav-link" href="blood-banks.html">Find Blood</a>
+  <div class="navbar-actions">
+    <button class="btn btn-ghost" onclick="logout('index.html')">Log Out</button>
+  </div>
+</div>
+
+<!-- DASHBOARD LAYOUT -->
+<div class="dashboard-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" aria-label="Donor navigation">
+    <nav class="sidebar-nav">
+      <a class="sidebar-link active" href="donor-dashboard.html">
+        <span class="link-icon">🏠</span>
+        <span class="link-text">Dashboard</span>
+      </a>
+      <a class="sidebar-link" href="#incoming" onclick="scrollTo('incoming-section')">
+        <span class="link-icon">🔔</span>
+        <span class="link-text">Incoming Requests</span>
+      </a>
+      <a class="sidebar-link" href="#history" onclick="scrollTo('history-section')">
+        <span class="link-icon">📜</span>
+        <span class="link-text">Donation History</span>
+      </a>
+      <div class="sidebar-divider"></div>
+      <a class="sidebar-link" href="blood-banks.html">
+        <span class="link-icon">🏥</span>
+        <span class="link-text">Blood Banks</span>
+      </a>
+      <a class="sidebar-link" href="#" onclick="logout('index.html');return false;">
+        <span class="link-icon">🚪</span>
+        <span class="link-text">Log Out</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main content -->
+  <main class="dash-main">
+    <div class="dash-topbar">
+      <div>
+        <h1 class="dash-title">Donor Dashboard</h1>
+        <p class="dash-subtitle" id="donor-welcome">Welcome back!</p>
+      </div>
+      <div class="toggle-wrap" id="availability-toggle-wrap">
+        <span class="toggle-label">Available to donate</span>
+        <label class="toggle" title="Toggle your donation availability">
+          <input type="checkbox" id="availability-toggle" onchange="toggleAvailability(this.checked)" />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Profile card -->
+    <div class="profile-card" id="profile-card">
+      <div class="profile-avatar" id="profile-avatar">—</div>
+      <div class="profile-info">
+        <div class="profile-name" id="profile-name">Loading…</div>
+        <div class="profile-meta" id="profile-meta"></div>
+        <div class="profile-tags" id="profile-tags"></div>
+      </div>
+      <div style="text-align:right; min-width:160px;">
+        <div style="margin-bottom:8px;">
+          <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--color-text-muted); margin-bottom:4px;">Last Donation</div>
+          <div style="font-size:14px; font-weight:600;" id="last-donation-date">—</div>
+        </div>
+        <div>
+          <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--color-text-muted); margin-bottom:4px;">Next Eligible</div>
+          <div style="font-size:14px; font-weight:600;" id="next-eligible-date">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stat cards -->
+    <div class="stat-cards" style="margin-bottom:28px;">
+      <div class="stat-card success">
+        <div class="stat-card-label">Total Donations</div>
+        <div class="stat-card-value" id="stat-total-donations">—</div>
+      </div>
+      <div class="stat-card warning">
+        <div class="stat-card-label">Pending Responses</div>
+        <div class="stat-card-value" id="stat-pending-resp">—</div>
+      </div>
+      <div class="stat-card primary">
+        <div class="stat-card-label">Accepted Requests</div>
+        <div class="stat-card-value" id="stat-accepted-req">—</div>
+      </div>
+    </div>
+
+    <!-- Incoming requests section -->
+    <div class="panel" id="incoming-section">
+      <div class="panel-header">
+        <span class="panel-title">🔔 Incoming Blood Requests</span>
+        <button class="btn btn-ghost btn-sm" onclick="loadIncomingRequests()">↻ Refresh</button>
+      </div>
+
+      <div id="incoming-loading" style="text-align:center; padding:40px;">
+        <div class="spinner spinner-dark" style="margin:0 auto 12px;"></div>
+        <span style="font-size:14px; color:var(--color-text-muted);">Loading requests…</span>
+      </div>
+
+      <div class="panel-body" id="incoming-container" style="display:none;">
+        <div class="request-cards-grid" id="incoming-grid"></div>
+      </div>
+
+      <div id="incoming-empty" class="empty-state" style="display:none;">
+        <div class="empty-icon">🔔</div>
+        <h3>No incoming requests</h3>
+        <p>You'll be notified when a patient matching your blood type needs help.</p>
+      </div>
+    </div>
+
+    <!-- Donation history / accepted requests -->
+    <div class="panel" id="history-section">
+      <div class="panel-header">
+        <span class="panel-title">Donation History</span>
+      </div>
+
+      <div id="history-loading" style="text-align:center; padding:40px;">
+        <div class="spinner spinner-dark" style="margin:0 auto 12px;"></div>
+      </div>
+
+      <div class="panel-body no-pad" id="history-container" style="display:none;">
+        <div class="table-wrap">
+          <table aria-label="Donation history">
+            <thead>
+              <tr>
+                <th>Patient</th>
+                <th>Blood Group</th>
+                <th>Units</th>
+                <th>Hospital</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="history-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="history-empty" class="empty-state" style="display:none;">
+        <div class="empty-icon">📜</div>
+        <h3>No donation history yet</h3>
+        <p>Your accepted requests and completed donations will appear here.</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div id="toast-container" aria-live="polite"></div>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/donor.js"></script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Blood Bridge – Project Status</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"Segoe UI",system-ui,sans-serif;font-size:14px;line-height:1.6;color:#1f2328;background:#fff;padding:32px 24px}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{font-size:20px;font-weight:800;margin-bottom:4px}
+  .sub{font-size:13px;color:#57606a;margin-bottom:28px}
+  h2{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#57606a;margin:28px 0 10px}
+  .section{display:flex;flex-direction:column;gap:6px;margin-bottom:4px}
+  .item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:8px;border:1px solid #e5e7eb}
+  .item.ok   {background:#f0fdf4;border-color:#bbf7d0}
+  .item.part {background:#fffbeb;border-color:#fde68a}
+  .item.no   {background:#fff1f2;border-color:#fecdd3}
+  .dot{width:16px;height:16px;border-radius:50%;flex-shrink:0;margin-top:2px}
+  .dot.ok  {background:#22c55e}
+  .dot.part{background:#f59e0b}
+  .dot.no  {background:#ef4444}
+  .label{font-weight:600;font-size:13px}
+  .note{font-size:12px;color:#57606a;margin-top:2px}
+  .tag{display:inline-block;padding:1px 8px;border-radius:20px;font-size:11px;font-weight:600;margin-left:6px;vertical-align:middle}
+  .tag.fe{background:#dbeafe;color:#1d4ed8}
+  .tag.be{background:#ede9fe;color:#6d28d9}
+  .tag.both{background:#f3e8ff;color:#7c3aed}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px;padding:12px 16px;background:#f7f8fa;border:1px solid #e5e7eb;border-radius:8px;font-size:12px}
+  .legend-item{display:flex;align-items:center;gap:6px}
+  .summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}
+  .s-box{padding:14px;border-radius:8px;text-align:center;border:1px solid #e5e7eb}
+  .s-box .n{font-size:1.8rem;font-weight:800;display:block}
+  .s-box .l{font-size:12px;color:#57606a}
+  .s-box.ok{background:#f0fdf4;border-color:#bbf7d0}.s-box.ok .n{color:#16a34a}
+  .s-box.part{background:#fffbeb;border-color:#fde68a}.s-box.part .n{color:#d97706}
+  .s-box.no{background:#fff1f2;border-color:#fecdd3}.s-box.no .n{color:#dc2626}
+  footer{margin-top:40px;padding-top:16px;border-top:1px solid #e5e7eb;text-align:center;font-size:11px;color:#57606a}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🩸 Blood Bridge — Project Status Audit</h1>
+  <p class="sub">Snapshot as of 13 Nov 2026 · DEMO_MODE = false · Flask backend required</p>
+
+  <div class="summary">
+    <div class="s-box ok"><span class="n">12</span><span class="l">✅ Complete</span></div>
+    <div class="s-box part"><span class="n">7</span><span class="l">⚠️ Partial</span></div>
+    <div class="s-box no"><span class="n">6</span><span class="l">❌ Not Built</span></div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="dot ok"></div> Fully working</div>
+    <div class="legend-item"><div class="dot part"></div> Partial — needs backend or minor fix</div>
+    <div class="legend-item"><div class="dot no"></div> Not built yet</div>
+    <div class="legend-item"><span class="tag fe">FE</span> Frontend</div>
+    <div class="legend-item"><span class="tag be">BE</span> Backend</div>
+  </div>
+
+  
+  <h2>🔐 Authentication</h2>
+  <div class="section">
+    <div class="item ok"><div class="dot ok"></div><div>
+      <div class="label">User Registration (Requester / Donor) <span class="tag fe">FE</span></div>
+      <div class="note">Form validation, field errors, password confirm, toast — all complete.</div>
+    </div></div>
+    <div class="item ok"><div class="dot ok"></div><div>
+      <div class="label">Login + JWT session storage <span class="tag fe">FE</span></div>
+      <div class="note">Token saved to localStorage, role-based redirect to correct dashboard.</div>
+    </div></div>
+    <div class="item ok"><div class="dot ok"></div><div>
+      <div class="label">Logout + session clear <span class="tag fe">FE</span></div>
+      <div class="note">Works on all pages.</div>
+    </div></div>
+    <div class="item ok"><div class="dot ok"></div><div>
+      <div class="label">Admin login portal (admin-login.html) <span class="tag fe">FE</span></div>
+      <div class="note">Separate page, forces role = admin.</div>
+    </div></div>
+    <div class="item ok"><div class="dot ok"></div><div>
+      <div class="label">Blood Bank login portal (blood-bank-login.html) <span class="tag fe">FE</span></div>
+      <div class="note">Separate page, forces role = blood_bank.</div>
+    </div></div>
+    <div class="item ok"><div class="dot ok"></div><div>
+      <div class="label">Flask Auth API — register, login, /me <span class="tag be">BE</span></div>
+      <div class="note">Accepts roles: requester, donor, admin, blood_bank. bcrypt hashed passwords, JWT tokens.</div>
+    </div></div>
+  </div>
+
+  
+  <h2>🫀 Donor</h2>
+  <div class="section">
+    <div class="item ok"><div class="dot ok"></div><div>
+      <div class="label">Donor registration form (donor-register.html) <span class="tag fe">FE</span></div>
+      <div class="note">DOB→age calc, eligibility 56-day check, consent checkbox, success modal.</div>
+    </div></div>
+    <div class="item ok"><div class="dot ok"></div><div>
+      <div class="label">Donor dashboard — profile card, availability toggle <span class="tag fe">FE</span></div>
+      <div class="note">Calls GET /donors/me and PATCH /donors/me/availability.</div>
+    </div></div>
+    <div class="item ok"><div class="dot ok"></div><div>
+      <div class="label">Incoming blood requests + Accept flow <span class="tag fe">FE</span></div>
+      <div class="note">First-donor-wins, 409 handled, card updates to "Accepted" on success.</div>
+    </div></div>
+    <div class="item part"><div class="dot part"></div><div>
+      <div class="label">Donation history tab <span class="tag fe">FE</span></div>
+      <div class="note">⚠️ Currently re-uses GET /blood-requests/mine and filters accepted. Needs a dedicated donor donations endpoint on the backend.</div>
+    </div></div>
+    <div class="item part"><div class="dot part"></div><div>
+      <div class="label">Flask donor routes <span class="tag be">BE</span></div>
+      <div class="note">⚠️ /donors/register requires user to already exist (register first, then register as donor separately). Should be combined into one step or handled at register time.</div>
+    </div></div>
+  </div>
+
+  
+  <h2>🧑‍⚕️ Requester</h2>
+  <div class="section">
+    <div class="item ok"><div class="dot ok"></div><div>
+      <div class="label">Blood request form — 2-step (blood-request.html) <span class="tag fe">FE</span></div>
+      <div class="note">Step 1 collects details, Step 2 shows blood banks in city, calls notify donors if no stock.</div>
+    </div></div>
+    <div class="item ok"><div class="dot ok"></div><div>
+      <div class="label">Requester dashboard — view/filter/cancel requests <span class="tag fe">FE</span></div>
+      <div class="note">Status filter, cancel modal with confirm, stat cards (total/pending/accepted/cancelled).</div>
+    </div></div>
+    <div class="item part"><div class="dot part"></div><div>
+      <div class="label">View Request Details modal <span class="tag fe">FE</span></div>
+      <div class="note">⚠️ Shows local data only — city field missing from BloodRequest.to_dict() on the backend.</div>
+    </div></div>
+  </div>
+
+  
+  <h2>🏥 Blood Banks</h2>
+  <div class="section">
+    <div class="item ok"><div class="dot ok"></div><div>
+      <div class="label">Public blood bank search (blood-banks.html) <span class="tag fe">FE</span></div>
+      <div class="note">Filter by city + blood group, colour-coded stock badges.</div>
+    </div></div>
+    <div class="item ok"><div class="dot ok"></div><div>
+      <div class="label">Blood Bank Dashboard — overview, stock update, full inventory <span class="tag fe">FE</span></div>
+      <div class="note">3-tab dashboard. Update all 8 blood groups per bank in one save. Quick modal per row.</div>
+    </div></div>
+    <div class="item ok"><div class="dot ok"></div><div>
+      <div class="label">Admin creates blood bank + issues login credentials <span class="tag fe">FE</span></div>
+      <div class="note">Registers a blood_bank user + creates bank record. Shows credentials modal with copy button. Auto-generate password (🎲).</div>
+    </div></div>
+    <div class="item part"><div class="dot part"></div><div>
+      <div class="label">Blood bank linked to its user account <span class="tag be">BE</span></div>
+      <div class="note">⚠️ BloodBank model has no user_id FK. The blood bank staff can log in but the dashboard shows ALL banks, not just theirs. Need to add user_id to BloodBank and filter by it.</div>
+    </div></div>
+    <div class="item part"><div class="dot part"></div><div>
+      <div class="label">Flask blood bank routes <span class="tag be">BE</span></div>
+      <div class="note">⚠️ GET/POST/PUT all work, but city field was added to the HTML form after the original model — need to confirm city column exists in BloodBank model (it does, added in models.py).</div>
+    </div></div>
+  </div>
+
+  
+  <h2>🛡️ Admin Dashboard</h2>
+  <div class="section">
+    <div class="item ok"><div class="dot ok"></div><div>
+      <div class="label">Stats overview (donors, requesters, requests, pending) <span class="tag both">FE+BE</span></div>
+      <div class="note">Calls GET /admin/stats. Backend returns live counts from DB.</div>
+    </div></div>
+    <div class="item ok"><div class="dot ok"></div><div>
+      <div class="label">All donors table with search <span class="tag both">FE+BE</span></div>
+      <div class="note">Search by name or blood group client-side. View button (placeholder toast).</div>
+    </div></div>
+    <div class="item ok"><div class="dot ok"></div><div>
+      <div class="label">All blood requests table with status filter <span class="tag both">FE+BE</span></div>
+    </div></div>
+    <div class="item part"><div class="dot part"></div><div>
+      <div class="label">Requesters tab <span class="tag fe">FE</span></div>
+      <div class="note">⚠️ Shows empty state placeholder. No backend endpoint or table rendering implemented yet.</div>
+    </div></div>
+    <div class="item no"><div class="dot no"></div><div>
+      <div class="label">Donor detail / profile view</div>
+      <div class="note">❌ "View" button shows a toast. No detail modal or page built.</div>
+    </div></div>
+  </div>
+
+  
+  <h2>⚙️ Flask Backend</h2>
+  <div class="section">
+    <div class="item ok"><div class="dot ok"></div><div>
+      <div class="label">App factory, extensions, CORS, JWT <span class="tag be">BE</span></div>
+      <div class="note">app.py, config.py, extensions.py all wired up. Tables auto-created on first run.</div>
+    </div></div>
+    <div class="item ok"><div class="dot ok"></div><div>
+      <div class="label">MySQL schema + seed admin user <span class="tag be">BE</span></div>
+      <div class="note">schema.sql ready. Admin: admin@bloodbridge.com / admin1234.</div>
+    </div></div>
+    <div class="item no"><div class="dot no"></div><div>
+      <div class="label">Blood bank linked to user (user_id FK on BloodBank)</div>
+      <div class="note">❌ BloodBank model has no user_id. Staff dashboard shows all banks instead of only their own. Fix: add user_id FK + GET /blood-banks/mine endpoint.</div>
+    </div></div>
+    <div class="item no"><div class="dot no"></div><div>
+      <div class="label">city field in BloodRequest model</div>
+      <div class="note">❌ BloodRequest model stores pincode but not city. Frontend sends city — it is silently dropped. Fix: add city column to BloodRequest.</div>
+    </div></div>
+    <div class="item no"><div class="dot no"></div><div>
+      <div class="label">Donor donations history endpoint</div>
+      <div class="note">❌ No GET /donors/me/donations. Currently donor history re-uses blood-requests which is wrong.</div>
+    </div></div>
+    <div class="item no"><div class="dot no"></div><div>
+      <div class="label">Admin — requesters list endpoint</div>
+      <div class="note">❌ No GET /admin/requesters endpoint. Requester tab in admin dashboard is an empty placeholder.</div>
+    </div></div>
+    <div class="item no"><div class="dot no"></div><div>
+      <div class="label">Admin role guard (middleware)</div>
+      <div class="note">❌ Admin routes check role manually per function. Should be a shared decorator to avoid repetition and security gaps.</div>
+    </div></div>
+  </div>
+
+  
+  <h2>🚀 Recommended Next Steps (Priority Order)</h2>
+  <div class="section">
+    <div class="item no"><div class="dot no"></div><div>
+      <div class="label">1. Start Flask backend + test health endpoint</div>
+      <div class="note">Run <code>python run.py</code> from /backend. Visit http://127.0.0.1:5000/api/health → {"status":"ok"}</div>
+    </div></div>
+    <div class="item no"><div class="dot no"></div><div>
+      <div class="label">2. Add city to BloodRequest model + migration</div>
+      <div class="note">Small backend fix — high impact on requester flow.</div>
+    </div></div>
+    <div class="item no"><div class="dot no"></div><div>
+      <div class="label">3. Add user_id FK to BloodBank + /blood-banks/mine endpoint</div>
+      <div class="note">Lets blood bank staff see only their own bank on the dashboard.</div>
+    </div></div>
+    <div class="item no"><div class="dot no"></div><div>
+      <div class="label">4. Add GET /admin/requesters + render requesters tab</div>
+      <div class="note">Complete the admin dashboard.</div>
+    </div></div>
+    <div class="item no"><div class="dot no"></div><div>
+      <div class="label">5. Add donor donations history endpoint</div>
+      <div class="note">GET /donors/me/donations to fix the donor history tab.</div>
+    </div></div>
+  </div>
+
+  <footer>Made with IBM Bob</footer>
+</div>
+</body>
+</html>

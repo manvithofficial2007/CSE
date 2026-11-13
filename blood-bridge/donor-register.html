@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Donor Registration – Blood Bridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/forms.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="container navbar-inner">
+    <a class="navbar-brand" href="index.html">
+      <span class="brand-icon" aria-hidden="true">🩸</span>
+      Blood Bridge
+    </a>
+    <ul class="navbar-nav">
+      <li><a class="nav-link" href="index.html">Home</a></li>
+      <li><a class="nav-link" href="blood-banks.html">Find Blood</a></li>
+      <li><a class="nav-link active" href="donor-register.html">Become a Donor</a></li>
+    </ul>
+    <div class="navbar-actions">
+      <a id="nav-login" class="btn btn-outline btn-sm" href="login.html">Log In</a>
+      <a class="btn btn-primary btn-sm" href="register.html">Sign Up</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-overlay" id="nav-overlay">
+  <a class="nav-link" href="index.html">Home</a>
+  <a class="nav-link" href="blood-banks.html">Find Blood</a>
+  <a class="nav-link active" href="donor-register.html">Become a Donor</a>
+  <div class="navbar-actions"><a class="btn btn-outline" href="login.html">Log In</a></div>
+</div>
+
+<main class="form-page">
+  <div class="container">
+
+    <div class="form-card">
+      <h1 class="form-card-title">Donor Registration</h1>
+      <p class="form-card-subtitle">
+        Register as a blood donor and start saving lives. Your information is kept private and secure.
+      </p>
+
+      <div id="donor-reg-alert" class="alert" style="display:none; margin-bottom:20px;" role="alert"></div>
+
+      <!-- Age-block banner (shown if under 18) -->
+      <div id="age-block-banner" class="alert alert-danger" style="display:none;" role="alert">
+        ⛔ You must be at least 18 years old to register as a blood donor.
+      </div>
+
+      <form id="donor-register-form" novalidate>
+
+        <!-- Personal Information -->
+        <div class="form-section-title">Personal Information</div>
+
+        <div class="form-grid">
+          <div class="form-group span-2">
+            <label for="dr-name">Full name <span class="required">*</span></label>
+            <input class="form-control" type="text" id="dr-name" placeholder="As per ID proof" required />
+            <span class="field-error" id="dr-name-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="dr-email">Email <span class="required">*</span></label>
+            <input class="form-control" type="email" id="dr-email" placeholder="you@example.com" required />
+            <span class="field-error" id="dr-email-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="dr-phone">Phone number <span class="required">*</span></label>
+            <input class="form-control" type="tel" id="dr-phone" placeholder="10-digit mobile number" required />
+            <span class="field-error" id="dr-phone-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="dr-dob">Date of birth <span class="required">*</span></label>
+            <input class="form-control" type="date" id="dr-dob" required />
+            <span class="field-error" id="dr-dob-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="dr-age">Age</label>
+            <input class="form-control" type="number" id="dr-age" placeholder="Calculated automatically" disabled />
+            <span class="field-hint">Auto-filled from date of birth.</span>
+          </div>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <!-- Donation Details -->
+        <div class="form-section-title">Donation Details</div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="dr-blood-group">Blood group <span class="required">*</span></label>
+            <select class="form-control" id="dr-blood-group" required>
+              <option value="">— Select —</option>
+              <option>A+</option><option>A-</option>
+              <option>B+</option><option>B-</option>
+              <option>O+</option><option>O-</option>
+              <option>AB+</option><option>AB-</option>
+            </select>
+            <span class="field-error" id="dr-blood-group-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="dr-availability">Current availability <span class="required">*</span></label>
+            <select class="form-control" id="dr-availability" required>
+              <option value="">— Select —</option>
+              <option value="available">Available to donate</option>
+              <option value="unavailable">Not available right now</option>
+            </select>
+            <span class="field-error" id="dr-availability-error"></span>
+          </div>
+
+          <div class="form-group span-2">
+            <label class="form-check">
+              <input type="checkbox" id="dr-first-time" />
+              <span class="form-check-label">I am a first-time donor (no previous donation history)</span>
+            </label>
+          </div>
+
+          <div class="form-group span-2" id="last-donation-group">
+            <label for="dr-last-donation">Last donation date <span class="required" id="last-donation-req">*</span></label>
+            <input class="form-control" type="date" id="dr-last-donation" />
+            <span class="field-error" id="dr-last-donation-error"></span>
+
+            <!-- Eligibility warning (not a medical claim, just a reminder) -->
+            <div class="eligibility-banner" id="eligibility-warning">
+              <span>⚠️</span>
+              <span>
+                <strong>Reminder:</strong> The recommended interval between whole-blood donations is at least 56 days (8 weeks).
+                Based on the date you entered, you may not yet be eligible. Please confirm your eligibility with the blood bank or medical staff before donating.
+                This is a reminder only — Blood Bridge does not make medical eligibility determinations.
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <!-- Location -->
+        <div class="form-section-title">Location</div>
+
+        <div class="form-grid">
+          <div class="form-group span-2">
+            <label for="dr-city">City <span class="required">*</span></label>
+            <select class="form-control" id="dr-city" required>
+              <option value="">— Select city —</option>
+              <option>Agra</option>
+              <option>Ahmedabad</option>
+              <option>Amritsar</option>
+              <option>Aurangabad</option>
+              <option>Bangalore</option>
+              <option>Bhopal</option>
+              <option>Bhubaneswar</option>
+              <option>Chandigarh</option>
+              <option>Chennai</option>
+              <option>Coimbatore</option>
+              <option>Dehradun</option>
+              <option>Delhi</option>
+              <option>Faridabad</option>
+              <option>Ghaziabad</option>
+              <option>Guwahati</option>
+              <option>Gwalior</option>
+              <option>Hubli</option>
+              <option>Hyderabad</option>
+              <option>Indore</option>
+              <option>Jaipur</option>
+              <option>Jammu</option>
+              <option>Jodhpur</option>
+              <option>Kanpur</option>
+              <option>Kochi</option>
+              <option>Kolkata</option>
+              <option>Kozhikode</option>
+              <option>Lucknow</option>
+              <option>Ludhiana</option>
+              <option>Madurai</option>
+              <option>Mangalore</option>
+              <option>Meerut</option>
+              <option>Mumbai</option>
+              <option>Mysuru</option>
+              <option>Nagpur</option>
+              <option>Nashik</option>
+              <option>Patna</option>
+              <option>Prayagraj</option>
+              <option>Pune</option>
+              <option>Raipur</option>
+              <option>Rajkot</option>
+              <option>Ranchi</option>
+              <option>Shimla</option>
+              <option>Srinagar</option>
+              <option>Surat</option>
+              <option>Thiruvananthapuram</option>
+              <option>Udupi</option>
+              <option>Vadodara</option>
+              <option>Varanasi</option>
+              <option>Vijayawada</option>
+              <option>Visakhapatnam</option>
+            </select>
+            <span class="field-error" id="dr-city-error"></span>
+          </div>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <div class="form-group">
+          <label class="form-check">
+            <input type="checkbox" id="dr-consent" required />
+            <span class="form-check-label">
+              I confirm that the information provided is accurate. I understand that Blood Bridge
+              will share my contact details with requesters only when I accept a blood request.
+            </span>
+          </label>
+          <span class="field-error" id="dr-consent-error"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:8px;" id="dr-submit-btn">
+          Register as Donor
+        </button>
+      </form>
+    </div>
+
+  </div>
+</main>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="success-modal" role="dialog" aria-modal="true" aria-labelledby="success-modal-title">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="success-modal-title">🎉 Registration Successful!</h2>
+    </div>
+    <div class="modal-body">
+      Thank you for registering as a blood donor on Blood Bridge. Your profile has been created.
+      You will receive notifications when your blood type is needed in your area.
+    </div>
+    <div class="modal-footer">
+      <a class="btn btn-primary" href="login.html">Log In to Dashboard</a>
+      <a class="btn btn-ghost" href="index.html">Go Home</a>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container" aria-live="polite"></div>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/donor.js"></script>
+</body>
+</html>

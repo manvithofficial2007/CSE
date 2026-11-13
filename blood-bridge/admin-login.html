@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login – Blood Bridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/forms.css" />
+</head>
+<body>
+
+<div class="auth-page">
+
+  <div class="auth-card">
+    <a class="auth-logo" href="index.html">
+      <span class="brand-icon" aria-hidden="true">🩸</span>
+      Blood Bridge
+    </a>
+
+    <div style="display:inline-flex; align-items:center; gap:6px; padding:4px 12px; background:rgba(192,21,42,.12); color:#f88; border-radius:20px; font-size:12px; font-weight:700; letter-spacing:.05em; margin:0 auto 20px; display:flex; justify-content:center;">
+      🔐 ADMIN ACCESS
+    </div>
+
+    <h1 class="auth-heading">Admin Sign In</h1>
+    <p class="auth-subheading">Restricted to authorized personnel only</p>
+
+    <div id="login-alert" class="alert alert-danger" style="display:none; margin-bottom:16px;" role="alert"></div>
+
+    <form id="admin-login-form" novalidate>
+      <div class="form-group">
+        <label for="admin-email">Admin email <span class="required">*</span></label>
+        <input class="form-control" type="email" id="admin-email" placeholder="admin@bloodbridge.in" autocomplete="email" required />
+        <span class="field-error" id="admin-email-error"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="admin-password">Password <span class="required">*</span></label>
+        <div class="input-group">
+          <input class="form-control" type="password" id="admin-password" placeholder="Admin password" autocomplete="current-password" required />
+          <span class="input-group-icon" id="toggle-admin-pwd" role="button" aria-label="Toggle password visibility" tabindex="0">👁</span>
+        </div>
+        <span class="field-error" id="admin-password-error"></span>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block btn-lg" id="admin-login-btn" style="margin-top:4px;">
+        Sign In to Admin Panel
+      </button>
+    </form>
+
+    <div style="margin-top:20px; text-align:center;">
+      <a href="login.html" style="font-size:13px; color:var(--color-text-muted);">← Back to regular login</a>
+    </div>
+  </div>
+
+  <div style="margin-top:16px; font-size:12px; color:#4b5563; text-align:center; max-width:360px;">
+    <strong style="color:#6b7280;">Demo mode:</strong> Use any email and password of 4+ characters. Role will be set to admin.
+  </div>
+</div>
+
+<div id="toast-container" aria-live="polite"></div>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  // Admin-specific login overrides role to 'admin'
+  document.getElementById('admin-login-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    clearAllErrors(this);
+    hideAlert('login-alert');
+
+    const emailOk = validateEmail('admin-email');
+    const passOk  = validateMinLength('admin-password', 4, 'Password');
+    if (!emailOk || !passOk) return;
+
+    const btn     = document.getElementById('admin-login-btn');
+    const restore = setButtonLoading(btn, 'Signing in…');
+    const email   = document.getElementById('admin-email').value.trim();
+    const pwd     = document.getElementById('admin-password').value;
+
+    const result = await apiLogin(email, pwd);
+    restore();
+
+    if (!result.ok) {
+      showAlert('login-alert', result.data?.message || 'Login failed.');
+      return;
+    }
+
+    // Force admin role for admin login page
+    result.data.user.role = 'admin';
+    saveSession(result.data.token, result.data.user);
+    showToast('Admin access granted.', 'success');
+    setTimeout(() => { window.location.href = 'admin-dashboard.html'; }, 500);
+  });
+
+  initPasswordToggle('admin-password', 'toggle-admin-pwd');
+</script>
+</body>
+</html>

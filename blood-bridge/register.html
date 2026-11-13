@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account – Blood Bridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/forms.css" />
+</head>
+<body>
+
+<div class="auth-page">
+
+  <div class="auth-card" style="max-width:500px;">
+
+    <a class="auth-logo" href="index.html">
+      <span class="brand-icon" aria-hidden="true">🩸</span>
+      Blood Bridge
+    </a>
+
+    <h1 class="auth-heading">Create your account</h1>
+    <p class="auth-subheading">Join Blood Bridge — free and easy</p>
+
+    <div id="register-alert" class="alert" style="display:none; margin-bottom:16px;" role="alert"></div>
+
+    <form id="register-form" novalidate>
+
+      <div class="form-group">
+        <label for="reg-name">Full name <span class="required">*</span></label>
+        <input class="form-control" type="text" id="reg-name" placeholder="Arjun Sharma" autocomplete="name" required />
+        <span class="field-error" id="reg-name-error"></span>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="reg-email">Email <span class="required">*</span></label>
+          <input class="form-control" type="email" id="reg-email" placeholder="you@example.com" autocomplete="email" required />
+          <span class="field-error" id="reg-email-error"></span>
+        </div>
+        <div class="form-group">
+          <label for="reg-phone">Phone <span class="required">*</span></label>
+          <input class="form-control" type="tel" id="reg-phone" placeholder="10-digit number" autocomplete="tel" required />
+          <span class="field-error" id="reg-phone-error"></span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="reg-password">Password <span class="required">*</span></label>
+        <div class="input-group">
+          <input class="form-control" type="password" id="reg-password" placeholder="Minimum 8 characters" autocomplete="new-password" required />
+          <span class="input-group-icon" id="toggle-reg-pwd" role="button" aria-label="Show/hide password" tabindex="0">👁</span>
+        </div>
+        <span class="field-error" id="reg-password-error"></span>
+        <span class="field-hint">At least 8 characters. Use a mix of letters and numbers.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="reg-confirm">Confirm password <span class="required">*</span></label>
+        <div class="input-group">
+          <input class="form-control" type="password" id="reg-confirm" placeholder="Repeat your password" autocomplete="new-password" required />
+          <span class="input-group-icon" id="toggle-reg-confirm" role="button" aria-label="Show/hide password" tabindex="0">👁</span>
+        </div>
+        <span class="field-error" id="reg-confirm-error"></span>
+      </div>
+
+      <div class="form-group" style="margin-top:4px;">
+        <label class="form-check" style="font-weight:400;">
+          <input type="checkbox" id="reg-terms" required />
+          <span class="form-check-label">
+            I agree to the <a href="#" target="_blank">Terms of Use</a> and <a href="#" target="_blank">Privacy Policy</a>
+          </span>
+        </label>
+        <span class="field-error" id="reg-terms-error"></span>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:4px;">Create Account</button>
+    </form>
+
+    <div class="auth-footer">
+      Already have an account? <a href="login.html">Sign in</a>
+    </div>
+
+  </div>
+
+</div>
+
+<div id="toast-container" aria-live="polite"></div>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  // Extra: validate terms checkbox
+  document.getElementById('register-form').addEventListener('submit', function(e) {
+    const terms = document.getElementById('reg-terms');
+    if (!terms.checked) {
+      e.stopImmediatePropagation();
+      e.preventDefault();
+      showFieldError('reg-terms', 'You must accept the terms to continue.');
+    } else {
+      clearFieldError('reg-terms');
+    }
+  }, true); // capture phase so this runs before auth.js handler
+</script>
+</body>
+</html>

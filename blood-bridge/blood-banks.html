@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find Blood Banks – Blood Bridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/forms.css" />
+  <style>
+    .bb-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px 24px;
+      align-items: start;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow var(--transition);
+    }
+    .bb-card:hover { box-shadow: var(--shadow-md); }
+    .bb-card.unavailable { opacity: .65; }
+    .bb-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .bb-address { font-size: 13px; color: var(--color-text-muted); margin-bottom: 10px; }
+    .bb-meta { display: flex; flex-wrap: wrap; gap: 10px; }
+    .bb-meta-item { font-size: 13px; color: var(--color-text-muted); }
+    .bb-meta-item strong { color: var(--color-text); }
+    .bb-units-badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .units-available  { background: var(--color-success-light); color: var(--color-success); }
+    .units-low        { background: var(--color-warning-light); color: var(--color-warning); }
+    .units-none       { background: var(--color-danger-light);  color: var(--color-danger); }
+    .bb-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+    .bb-updated { font-size: 11px; color: var(--color-text-light); }
+    .results-grid { display: flex; flex-direction: column; gap: 12px; }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="container navbar-inner">
+    <a class="navbar-brand" href="index.html">
+      <span class="brand-icon" aria-hidden="true">🩸</span>
+      Blood Bridge
+    </a>
+    <ul class="navbar-nav">
+      <li><a class="nav-link" href="index.html">Home</a></li>
+      <li><a class="nav-link active" href="blood-banks.html">Find Blood</a></li>
+      <li><a class="nav-link" href="donor-register.html">Become a Donor</a></li>
+    </ul>
+    <div class="navbar-actions">
+      <a id="nav-login" class="btn btn-outline btn-sm" href="login.html">Log In</a>
+      <a class="btn btn-primary btn-sm" href="register.html">Sign Up</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-overlay" id="nav-overlay">
+  <a class="nav-link" href="index.html">Home</a>
+  <a class="nav-link active" href="blood-banks.html">Find Blood</a>
+  <a class="nav-link" href="donor-register.html">Become a Donor</a>
+  <div class="navbar-actions"><a class="btn btn-outline" href="login.html">Log In</a></div>
+</div>
+
+<main style="padding: 48px 0 72px; background: var(--color-surface); min-height: calc(100vh - var(--nav-height));">
+  <div class="container">
+
+    <!-- Page header -->
+    <div style="margin-bottom:28px;">
+      <span class="section-label">Blood Banks</span>
+      <h1 style="font-size:clamp(1.4rem,2.5vw,1.8rem); margin-bottom:8px;">Find Blood Banks</h1>
+      <p style="font-size:14px; color:var(--color-text-muted);">
+        Search registered blood banks by city and blood group. Contact them directly or submit a blood request.
+      </p>
+    </div>
+
+    <!-- Search bar -->
+    <form class="search-bar" id="search-form" novalidate>
+      <div class="form-group">
+        <label for="search-city">City</label>
+        <select class="form-control" id="search-city">
+          <option value="">All cities</option>
+          <option>Agra</option>
+          <option>Ahmedabad</option>
+          <option>Amritsar</option>
+          <option>Aurangabad</option>
+          <option>Bangalore</option>
+          <option>Bhopal</option>
+          <option>Bhubaneswar</option>
+          <option>Chandigarh</option>
+          <option>Chennai</option>
+          <option>Coimbatore</option>
+          <option>Dehradun</option>
+          <option>Delhi</option>
+          <option>Faridabad</option>
+          <option>Ghaziabad</option>
+          <option>Guwahati</option>
+          <option>Gwalior</option>
+          <option>Hubli</option>
+          <option>Hyderabad</option>
+          <option>Indore</option>
+          <option>Jaipur</option>
+          <option>Jammu</option>
+          <option>Jodhpur</option>
+          <option>Kanpur</option>
+          <option>Kochi</option>
+          <option>Kolkata</option>
+          <option>Kozhikode</option>
+          <option>Lucknow</option>
+          <option>Ludhiana</option>
+          <option>Madurai</option>
+          <option>Mangalore</option>
+          <option>Meerut</option>
+          <option>Mumbai</option>
+          <option>Mysuru</option>
+          <option>Nagpur</option>
+          <option>Nashik</option>
+          <option>Patna</option>
+          <option>Prayagraj</option>
+          <option>Pune</option>
+          <option>Raipur</option>
+          <option>Rajkot</option>
+          <option>Ranchi</option>
+          <option>Shimla</option>
+          <option>Srinagar</option>
+          <option>Surat</option>
+          <option>Thiruvananthapuram</option>
+          <option>Udupi</option>
+          <option>Vadodara</option>
+          <option>Varanasi</option>
+          <option>Vijayawada</option>
+          <option>Visakhapatnam</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="search-blood-group">Blood group</label>
+        <select class="form-control" id="search-blood-group">
+          <option value="">All blood groups</option>
+          <option>A+</option><option>A-</option>
+          <option>B+</option><option>B-</option>
+          <option>O+</option><option>O-</option>
+          <option>AB+</option><option>AB-</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary" id="search-btn">Search</button>
+      <button type="button" class="btn btn-ghost" onclick="resetSearch()">Reset</button>
+    </form>
+
+    <!-- Results area -->
+    <div id="results-loading" style="display:none; text-align:center; padding:60px 0;">
+      <div class="spinner spinner-dark" style="margin:0 auto 12px;"></div>
+      <span style="font-size:14px; color:var(--color-text-muted);">Searching blood banks…</span>
+    </div>
+
+    <div id="results-summary" style="margin-bottom:16px; font-size:14px; color:var(--color-text-muted); display:none;"></div>
+
+    <div class="results-grid" id="bb-results"></div>
+
+    <div id="bb-empty" class="empty-state" style="display:none;">
+      <div class="empty-icon" aria-hidden="true">🏥</div>
+      <h3>No blood banks found</h3>
+      <p>Try a different city or blood group, or <a href="blood-request.html">submit a request</a> to notify donors.</p>
+    </div>
+
+  </div>
+</main>
+
+<!-- NOTIFY DONORS MODAL -->
+<div class="modal-overlay" id="notify-modal" role="dialog" aria-modal="true" aria-labelledby="notify-modal-title">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="notify-modal-title">⚠️ Insufficient Blood Stock</h2>
+      <button class="modal-close" onclick="closeNotifyModal()" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      Blood is not available in sufficient quantity in registered blood banks in your location.
+      Would you like to notify matching donors in your area?
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="goToRequest()">Notify Donors</button>
+      <button class="btn btn-ghost" onclick="closeNotifyModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container" aria-live="polite"></div>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  // ── Blood Banks page script ──────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    // Pre-fill blood group from quick-search chip on home page
+    const prefillBg = sessionStorage.getItem('bb_prefill_bg');
+    if (prefillBg) {
+      const bgSelect = document.getElementById('search-blood-group');
+      if (bgSelect) bgSelect.value = prefillBg;
+      sessionStorage.removeItem('bb_prefill_bg');
+    }
+    const initBg   = document.getElementById('search-blood-group')?.value || '';
+    const initCity = document.getElementById('search-city')?.value || '';
+    loadBloodBanks(initBg, initCity);
+    document.getElementById('search-form').addEventListener('submit', handleSearch);
+  });
+
+  async function loadBloodBanks(bloodGroup, city) {
+    const loading   = document.getElementById('results-loading');
+    const container = document.getElementById('bb-results');
+    const empty     = document.getElementById('bb-empty');
+    const summary   = document.getElementById('results-summary');
+
+    loading.style.display   = 'block';
+    container.innerHTML     = '';
+    empty.style.display     = 'none';
+    summary.style.display   = 'none';
+
+    const result = await apiSearchBloodBanks(bloodGroup, city);
+    loading.style.display = 'none';
+
+    if (!result.ok) {
+      showToast('Failed to load blood banks.', 'error');
+      return;
+    }
+
+    const banks = result.data;
+    summary.style.display = 'block';
+    summary.textContent   = `Showing ${banks.length} blood bank${banks.length !== 1 ? 's' : ''}`;
+
+    if (!banks.length) {
+      empty.style.display = 'block';
+      return;
+    }
+
+    banks.forEach(bank => {
+      container.insertAdjacentHTML('beforeend', renderBankCard(bank));
+    });
+  }
+
+  function renderBankCard(bank) {
+    const units    = bank.units;
+    const unitsCls = units === 0 ? 'units-none' : units <= 2 ? 'units-low' : 'units-available';
+    const unitsLbl = units === 0 ? 'Out of stock' : `${units} unit${units !== 1 ? 's' : ''} available`;
+    const unavailCls = units === 0 ? 'unavailable' : '';
+
+    return `
+      <div class="bb-card ${unavailCls}">
+        <div>
+          <div class="bb-name">${escHtml(bank.name)}</div>
+          <div class="bb-address">📍 ${escHtml(bank.address)}${bank.city ? ', ' + escHtml(bank.city) : ''}</div>
+          <div class="bb-meta">
+            <span class="bb-meta-item"><strong>Blood Group:</strong> ${escHtml(bank.blood_group)}</span>
+            <span class="bb-meta-item"><strong>Contact:</strong> ${escHtml(bank.contact)}</span>
+          </div>
+        </div>
+        <div class="bb-actions">
+          <span class="bb-units-badge ${unitsCls}">${unitsLbl}</span>
+          <a class="btn btn-primary btn-sm" href="tel:${escHtml(bank.contact)}" aria-label="Call ${escHtml(bank.name)}">
+            📞 Call
+          </a>
+          <span class="bb-updated">Updated: ${escHtml(bank.updated)}</span>
+        </div>
+      </div>`;
+  }
+
+  function handleSearch(e) {
+    e.preventDefault();
+    const bg   = document.getElementById('search-blood-group').value;
+    const city = document.getElementById('search-city').value;
+    loadBloodBanks(bg, city);
+  }
+
+  function resetSearch() {
+    document.getElementById('search-blood-group').value = '';
+    document.getElementById('search-city').value = '';
+    loadBloodBanks('', '');
+  }
+
+  // Notify modal
+  function openNotifyModal() {
+    document.getElementById('notify-modal').classList.add('open');
+  }
+  function closeNotifyModal() {
+    document.getElementById('notify-modal').classList.remove('open');
+  }
+  function goToRequest() {
+    window.location.href = 'blood-request.html';
+  }
+
+  function escHtml(str) {
+    return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+</script>
+</body>
+</html>

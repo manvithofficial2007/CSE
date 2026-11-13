@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Request Blood – Blood Bridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/forms.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="container navbar-inner">
+    <a class="navbar-brand" href="index.html">
+      <span class="brand-icon" aria-hidden="true">🩸</span>
+      Blood Bridge
+    </a>
+    <ul class="navbar-nav">
+      <li><a class="nav-link" href="index.html">Home</a></li>
+      <li><a class="nav-link" href="blood-banks.html">Find Blood</a></li>
+      <li><a class="nav-link" href="donor-register.html">Become a Donor</a></li>
+    </ul>
+    <div class="navbar-actions">
+      <a id="nav-login" class="btn btn-outline btn-sm" href="login.html">Log In</a>
+      <a class="btn btn-primary btn-sm" href="register.html">Sign Up</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-overlay" id="nav-overlay">
+  <a class="nav-link" href="index.html">Home</a>
+  <a class="nav-link" href="blood-banks.html">Find Blood</a>
+  <a class="nav-link" href="donor-register.html">Become a Donor</a>
+  <div class="navbar-actions"><a class="btn btn-outline" href="login.html">Log In</a></div>
+</div>
+
+<main class="form-page">
+  <div class="container">
+
+    <!-- Progress steps -->
+    <div style="display:flex; justify-content:center; margin-bottom:32px; gap:0;">
+      <div class="step-indicator active" id="step-ind-1" style="display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:var(--color-primary);">
+        <span style="width:28px;height:28px;border-radius:50%;background:var(--color-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;">1</span>
+        Request Details
+      </div>
+      <div style="width:48px; height:2px; background:var(--color-border); margin:14px 8px 0;"></div>
+      <div class="step-indicator" id="step-ind-2" style="display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:var(--color-text-muted);">
+        <span style="width:28px;height:28px;border-radius:50%;background:var(--color-border);color:var(--color-text-muted);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;">2</span>
+        Blood Banks
+      </div>
+    </div>
+
+    <!-- Step 1: Request form -->
+    <div id="request-form-step" class="form-card">
+      <h1 class="form-card-title">Request Blood</h1>
+      <p class="form-card-subtitle">
+        Fill in the patient's details. We'll check blood bank availability first
+        before alerting matching donors.
+      </p>
+
+      <div id="request-alert" class="alert" style="display:none; margin-bottom:20px;" role="alert"></div>
+
+      <form id="blood-request-form" novalidate>
+
+        <div class="form-section-title">Patient / Attender Information</div>
+
+        <div class="form-grid">
+          <div class="form-group span-2">
+            <label for="req-name">Patient / Attender name <span class="required">*</span></label>
+            <input class="form-control" type="text" id="req-name" placeholder="Full name" required />
+            <span class="field-error" id="req-name-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="req-age">Patient age <span class="required">*</span></label>
+            <input class="form-control" type="number" id="req-age" placeholder="Years" min="0" max="120" required />
+            <span class="field-error" id="req-age-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="req-blood-group">Blood group needed <span class="required">*</span></label>
+            <select class="form-control" id="req-blood-group" required>
+              <option value="">— Select —</option>
+              <option>A+</option><option>A-</option>
+              <option>B+</option><option>B-</option>
+              <option>O+</option><option>O-</option>
+              <option>AB+</option><option>AB-</option>
+            </select>
+            <span class="field-error" id="req-blood-group-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="req-units">Units required <span class="required">*</span></label>
+            <input class="form-control" type="number" id="req-units" placeholder="Number of units" min="1" max="10" required />
+            <span class="field-error" id="req-units-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="req-contact">Contact number <span class="required">*</span></label>
+            <input class="form-control" type="tel" id="req-contact" placeholder="10-digit mobile" required />
+            <span class="field-error" id="req-contact-error"></span>
+          </div>
+        </div>
+
+        <div class="form-divider"></div>
+        <div class="form-section-title">Hospital &amp; Location</div>
+
+        <div class="form-grid">
+          <div class="form-group span-2">
+            <label for="req-hospital">Hospital name <span class="required">*</span></label>
+            <input class="form-control" type="text" id="req-hospital" placeholder="e.g. Apollo Hospital, Chennai" required />
+            <span class="field-error" id="req-hospital-error"></span>
+          </div>
+
+          <div class="form-group span-2">
+            <label for="req-city">City <span class="required">*</span></label>
+            <select class="form-control" id="req-city" required>
+              <option value="">— Select city —</option>
+              <option>Agra</option>
+              <option>Ahmedabad</option>
+              <option>Amritsar</option>
+              <option>Aurangabad</option>
+              <option>Bangalore</option>
+              <option>Bhopal</option>
+              <option>Bhubaneswar</option>
+              <option>Chandigarh</option>
+              <option>Chennai</option>
+              <option>Coimbatore</option>
+              <option>Dehradun</option>
+              <option>Delhi</option>
+              <option>Faridabad</option>
+              <option>Ghaziabad</option>
+              <option>Guwahati</option>
+              <option>Gwalior</option>
+              <option>Hubli</option>
+              <option>Hyderabad</option>
+              <option>Indore</option>
+              <option>Jaipur</option>
+              <option>Jammu</option>
+              <option>Jodhpur</option>
+              <option>Kanpur</option>
+              <option>Kochi</option>
+              <option>Kolkata</option>
+              <option>Kozhikode</option>
+              <option>Lucknow</option>
+              <option>Ludhiana</option>
+              <option>Madurai</option>
+              <option>Mangalore</option>
+              <option>Meerut</option>
+              <option>Mumbai</option>
+              <option>Mysuru</option>
+              <option>Nagpur</option>
+              <option>Nashik</option>
+              <option>Patna</option>
+              <option>Prayagraj</option>
+              <option>Pune</option>
+              <option>Raipur</option>
+              <option>Rajkot</option>
+              <option>Ranchi</option>
+              <option>Shimla</option>
+              <option>Srinagar</option>
+              <option>Surat</option>
+              <option>Thiruvananthapuram</option>
+              <option>Udupi</option>
+              <option>Vadodara</option>
+              <option>Varanasi</option>
+              <option>Vijayawada</option>
+              <option>Visakhapatnam</option>
+            </select>
+            <span class="field-error" id="req-city-error"></span>
+          </div>
+
+          <div class="form-group span-2">
+            <label for="req-notes">Additional notes</label>
+            <textarea class="form-control" id="req-notes" rows="2" placeholder="Any additional information for donors or blood banks…"></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:8px;" id="req-submit-btn">
+          Check Blood Bank Availability →
+        </button>
+      </form>
+    </div>
+
+    <!-- Step 2: Blood bank results (shown after form submit) -->
+    <div id="blood-bank-step" style="display:none;">
+      <div class="form-card" style="max-width:100%;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h2 style="font-size:19px; font-weight:800; margin-bottom:4px;">Blood Bank Availability</h2>
+            <p style="font-size:14px; color:var(--color-text-muted);">
+              Showing blood banks in your city with matching blood group.
+            </p>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="showRequestStep()">← Edit Request</button>
+        </div>
+
+        <div id="bb-search-summary" class="alert alert-info" style="margin:16px 0 20px;"></div>
+
+        <div id="bb-results-loading" style="text-align:center; padding:40px;">
+          <div class="spinner spinner-dark" style="margin:0 auto 12px;"></div>
+          <span style="font-size:14px; color:var(--color-text-muted);">Checking blood banks…</span>
+        </div>
+
+        <div id="bb-results-container" style="display:none;"></div>
+
+        <!-- Notify donors section -->
+        <div id="notify-donors-section" style="display:none; margin-top:24px; padding-top:24px; border-top:1px solid var(--color-border-light);">
+          <div class="alert alert-warning" style="margin-bottom:16px;">
+            ⚠️ Insufficient stock found in registered blood banks near your location.
+          </div>
+          <p style="font-size:14px; color:var(--color-text-muted); margin-bottom:16px;">
+            Would you like to notify matching donors in your area? They will receive an alert and can choose to respond.
+          </p>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <button class="btn btn-primary" id="notify-donors-btn" onclick="notifyDonors()">Notify Matching Donors</button>
+            <a class="btn btn-ghost" href="requester-dashboard.html">Cancel</a>
+          </div>
+        </div>
+
+        <!-- Submitted success -->
+        <div id="request-submitted" style="display:none; text-align:center; padding:40px 24px;">
+          <div style="font-size:48px; margin-bottom:16px;">✅</div>
+          <h3 style="font-size:18px; margin-bottom:8px;">Request Submitted Successfully</h3>
+          <p style="font-size:14px; color:var(--color-text-muted); margin-bottom:24px;">
+            Matching donors in your area have been notified. You can track this request from your dashboard.
+          </p>
+          <a class="btn btn-primary" href="requester-dashboard.html">View My Requests</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<div id="toast-container" aria-live="polite"></div>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/requester.js"></script>
+</body>
+</html>

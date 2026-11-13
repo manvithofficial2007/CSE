@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Requests – Blood Bridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="container navbar-inner">
+    <a class="navbar-brand" href="index.html">
+      <span class="brand-icon" aria-hidden="true">🩸</span>
+      Blood Bridge
+    </a>
+    <ul class="navbar-nav">
+      <li><a class="nav-link" href="blood-banks.html">Find Blood</a></li>
+      <li><a class="nav-link" href="blood-request.html">New Request</a></li>
+    </ul>
+    <div class="navbar-actions">
+      <span style="font-size:14px; color:var(--color-text-muted);">Hello, <strong id="nav-user-name">User</strong></span>
+      <button class="btn btn-ghost btn-sm" onclick="logout('index.html')">Log Out</button>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-overlay" id="nav-overlay">
+  <a class="nav-link" href="blood-banks.html">Find Blood</a>
+  <a class="nav-link" href="blood-request.html">New Request</a>
+  <div class="navbar-actions">
+    <button class="btn btn-ghost" onclick="logout('index.html')">Log Out</button>
+  </div>
+</div>
+
+<!-- DASHBOARD LAYOUT -->
+<div class="dashboard-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" aria-label="Dashboard navigation">
+    <nav class="sidebar-nav">
+      <a class="sidebar-link active" href="requester-dashboard.html">
+        <span class="link-icon">📋</span>
+        <span class="link-text">My Requests</span>
+      </a>
+      <a class="sidebar-link" href="blood-request.html">
+        <span class="link-icon">➕</span>
+        <span class="link-text">New Request</span>
+      </a>
+      <a class="sidebar-link" href="blood-banks.html">
+        <span class="link-icon">🏥</span>
+        <span class="link-text">Blood Banks</span>
+      </a>
+      <div class="sidebar-divider"></div>
+      <a class="sidebar-link" href="donor-register.html">
+        <span class="link-icon">🫀</span>
+        <span class="link-text">Become a Donor</span>
+      </a>
+      <a class="sidebar-link" href="#" onclick="logout('index.html');return false;">
+        <span class="link-icon">🚪</span>
+        <span class="link-text">Log Out</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main content -->
+  <main class="dash-main">
+    <div class="dash-topbar">
+      <div>
+        <h1 class="dash-title">My Blood Requests</h1>
+        <p class="dash-subtitle" id="req-welcome">Track and manage your blood requests.</p>
+      </div>
+      <a class="btn btn-primary" href="blood-request.html">+ New Request</a>
+    </div>
+
+    <!-- Stat cards -->
+    <div class="stat-cards">
+      <div class="stat-card primary">
+        <div class="stat-card-label">Total Requests</div>
+        <div class="stat-card-value" id="stat-total">—</div>
+      </div>
+      <div class="stat-card warning">
+        <div class="stat-card-label">Pending</div>
+        <div class="stat-card-value" id="stat-pending">—</div>
+      </div>
+      <div class="stat-card success">
+        <div class="stat-card-label">Accepted</div>
+        <div class="stat-card-value" id="stat-accepted">—</div>
+      </div>
+      <div class="stat-card info">
+        <div class="stat-card-label">Cancelled</div>
+        <div class="stat-card-value" id="stat-cancelled">—</div>
+      </div>
+    </div>
+
+    <!-- Requests table panel -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Recent Requests</span>
+        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+          <select class="form-control" id="filter-status" style="width:auto; padding:7px 32px 7px 12px; font-size:13px;" onchange="filterRequests()">
+            <option value="">All statuses</option>
+            <option value="pending">Pending</option>
+            <option value="accepted">Accepted</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="table-loading" style="text-align:center; padding:40px;">
+        <div class="spinner spinner-dark" style="margin:0 auto 12px;"></div>
+        <span style="font-size:14px; color:var(--color-text-muted);">Loading requests…</span>
+      </div>
+
+      <div class="panel-body no-pad" id="table-container" style="display:none;">
+        <div class="table-wrap">
+          <table id="requests-table" aria-label="Blood requests">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Patient</th>
+                <th>Blood Group</th>
+                <th>Units</th>
+                <th>Hospital</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="requests-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="requests-empty" class="empty-state" style="display:none;">
+        <div class="empty-icon">📋</div>
+        <h3>No requests yet</h3>
+        <p>Submit your first blood request to get started.</p>
+        <a class="btn btn-primary" href="blood-request.html" style="margin-top:16px;">Request Blood</a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- REQUEST DETAILS MODAL -->
+<div class="modal-overlay" id="details-modal" role="dialog" aria-modal="true" aria-labelledby="details-modal-title">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-header">
+      <h2 class="modal-title" id="details-modal-title">Request Details</h2>
+      <button class="modal-close" onclick="closeDetailsModal()" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body" id="details-modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeDetailsModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- CANCEL CONFIRM MODAL -->
+<div class="modal-overlay" id="cancel-modal" role="dialog" aria-modal="true" aria-labelledby="cancel-modal-title">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="cancel-modal-title">Cancel Request</h2>
+      <button class="modal-close" onclick="closeCancelModal()" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      Are you sure you want to cancel this blood request? This action cannot be undone.
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" id="confirm-cancel-btn" onclick="confirmCancel()">Yes, Cancel Request</button>
+      <button class="btn btn-ghost" onclick="closeCancelModal()">Keep Request</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container" aria-live="polite"></div>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/requester.js"></script>
+</body>
+</html>

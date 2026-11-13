@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blood Bank Dashboard – Blood Bridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/forms.css" />
+  <style>
+    /* Blood-group grid cards */
+    .bg-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .bg-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 20px 20px 16px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .bg-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .bg-card-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text-muted);
+    }
+
+    .bg-units {
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .bg-units.ok   { color: var(--color-success); }
+    .bg-units.low  { color: var(--color-warning); }
+    .bg-units.none { color: var(--color-danger); }
+
+    .bg-status {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+    }
+
+    .bg-status.ok   { background: var(--color-success-light); color: var(--color-success); }
+    .bg-status.low  { background: var(--color-warning-light); color: var(--color-warning); }
+    .bg-status.none { background: var(--color-danger-light);  color: var(--color-danger); }
+
+    .bg-card-footer {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Bank selector */
+    .bank-selector-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      padding: 16px 20px;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+    }
+
+    .bank-selector-wrap label {
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .bank-selector-wrap select {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    /* Summary strip */
+    .summary-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .summary-item {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      text-align: center;
+    }
+
+    .summary-item .s-val {
+      font-size: 1.75rem;
+      font-weight: 800;
+      display: block;
+    }
+
+    .summary-item .s-lbl {
+      font-size: 12px;
+      color: var(--color-text-muted);
+      margin-top: 2px;
+    }
+
+    /* Portal badge */
+    .portal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 10px;
+      background: var(--color-info-light);
+      color: var(--color-info);
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      margin-left: 6px;
+    }
+
+    @media (max-width: 600px) {
+      .bg-grid { grid-template-columns: 1fr 1fr; }
+      .summary-strip { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="container navbar-inner">
+    <a class="navbar-brand" href="blood-bank-dashboard.html">
+      <span class="brand-icon" aria-hidden="true">🩸</span>
+      Blood Bridge <span class="portal-badge">Blood Bank</span>
+    </a>
+    <div class="navbar-actions">
+      <span style="font-size:14px; color:var(--color-text-muted);" id="nav-bank-name">Blood Bank Portal</span>
+      <button class="btn btn-ghost btn-sm" onclick="logout('index.html')">Log Out</button>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-overlay" id="nav-overlay">
+  <div class="navbar-actions">
+    <button class="btn btn-ghost" onclick="logout('index.html')">Log Out</button>
+  </div>
+</div>
+
+<!-- DASHBOARD LAYOUT -->
+<div class="dashboard-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" aria-label="Blood bank navigation">
+    <nav class="sidebar-nav">
+      <span class="sidebar-section-label">Overview</span>
+      <a class="sidebar-link active" href="#" data-tab="overview">
+        <span class="link-icon">📊</span>
+        <span class="link-text">Dashboard</span>
+      </a>
+
+      <span class="sidebar-section-label">Stock</span>
+      <a class="sidebar-link" href="#" data-tab="stock">
+        <span class="link-icon">🩸</span>
+        <span class="link-text">Update Stock</span>
+      </a>
+      <a class="sidebar-link" href="#" data-tab="history">
+        <span class="link-icon">📋</span>
+        <span class="link-text">All Blood Groups</span>
+      </a>
+
+      <div class="sidebar-divider"></div>
+      <a class="sidebar-link" href="blood-banks.html">
+        <span class="link-icon">🌐</span>
+        <span class="link-text">Public View</span>
+      </a>
+      <a class="sidebar-link" href="#" onclick="logout('index.html');return false;">
+        <span class="link-icon">🚪</span>
+        <span class="link-text">Log Out</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main content -->
+  <main class="dash-main">
+
+    <!-- ═══ TAB: OVERVIEW ═══ -->
+    <div class="tab-panel active" id="tab-overview">
+      <div class="dash-topbar">
+        <div>
+          <h1 class="dash-title">Dashboard Overview</h1>
+          <p class="dash-subtitle" id="bb-date"></p>
+        </div>
+        <button class="btn btn-primary" onclick="bbSwitchTab('stock')">🩸 Update Stock</button>
+      </div>
+
+      <!-- Summary strip -->
+      <div class="summary-strip">
+        <div class="summary-item">
+          <span class="s-val" id="ov-total-banks" style="color:var(--color-info);">—</span>
+          <div class="s-lbl">Total Banks</div>
+        </div>
+        <div class="summary-item">
+          <span class="s-val" id="ov-total-units" style="color:var(--color-primary);">—</span>
+          <div class="s-lbl">Total Units</div>
+        </div>
+        <div class="summary-item">
+          <span class="s-val" id="ov-low-stock" style="color:var(--color-warning);">—</span>
+          <div class="s-lbl">Low / No Stock</div>
+        </div>
+        <div class="summary-item">
+          <span class="s-val" id="ov-cities" style="color:var(--color-success);">—</span>
+          <div class="s-lbl">Cities Covered</div>
+        </div>
+      </div>
+
+      <!-- Per blood-group overview cards -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Stock by Blood Group</span>
+          <span style="font-size:13px; color:var(--color-text-muted);">Across all banks</span>
+        </div>
+        <div class="panel-body">
+          <div id="ov-loading" style="text-align:center; padding:24px;">
+            <div class="spinner spinner-dark" style="margin:0 auto;"></div>
+          </div>
+          <div id="ov-bg-grid" class="bg-grid" style="display:none;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TAB: UPDATE STOCK ═══ -->
+    <div class="tab-panel" id="tab-stock">
+      <div class="dash-topbar">
+        <div>
+          <h1 class="dash-title">Update Blood Stock</h1>
+          <p class="dash-subtitle">Select a blood bank and update units available per blood group.</p>
+        </div>
+      </div>
+
+      <!-- Bank selector -->
+      <div class="bank-selector-wrap">
+        <label for="stock-bank-select">Select Blood Bank:</label>
+        <select class="form-control" id="stock-bank-select" onchange="onBankSelect()">
+          <option value="">— Choose a blood bank —</option>
+        </select>
+        <button class="btn btn-ghost btn-sm" onclick="loadBankSelector()">↻ Refresh</button>
+      </div>
+
+      <!-- Stock update form (shown after bank is selected) -->
+      <div id="stock-form-area" style="display:none;">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title" id="stock-bank-title">Blood Bank Name</span>
+            <span style="font-size:13px; color:var(--color-text-muted);" id="stock-bank-city"></span>
+          </div>
+          <div class="panel-body">
+            <p style="font-size:14px; color:var(--color-text-muted); margin-bottom:20px;">
+              Update the number of units available. Enter <strong>0</strong> if stock is depleted.
+            </p>
+
+            <div class="form-grid" id="stock-fields-grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:16px;">
+              <!-- dynamically populated -->
+            </div>
+
+            <div style="margin-top:24px; display:flex; gap:12px; flex-wrap:wrap;">
+              <button class="btn btn-primary" id="save-all-stock-btn" onclick="saveAllStock()">
+                💾 Save All Changes
+              </button>
+              <button class="btn btn-ghost" onclick="onBankSelect()">↺ Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Placeholder when no bank selected -->
+      <div id="stock-placeholder" class="panel">
+        <div class="panel-body">
+          <div class="empty-state">
+            <div class="empty-icon">🏥</div>
+            <h3>Select a Blood Bank</h3>
+            <p>Choose a blood bank from the dropdown above to update its stock.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TAB: ALL BLOOD GROUPS ═══ -->
+    <div class="tab-panel" id="tab-history">
+      <div class="dash-topbar">
+        <div>
+          <h1 class="dash-title">All Blood Groups</h1>
+          <p class="dash-subtitle">Complete stock listing across all banks.</p>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <select class="form-control" id="filter-city" style="width:auto;" onchange="renderHistoryTable()">
+            <option value="">All Cities</option>
+          </select>
+          <select class="form-control" id="filter-bg" style="width:auto;" onchange="renderHistoryTable()">
+            <option value="">All Blood Groups</option>
+            <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+            <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Stock Inventory</span>
+          <span id="history-count" style="font-size:13px; color:var(--color-text-muted);"></span>
+        </div>
+        <div id="history-loading" style="text-align:center; padding:40px;">
+          <div class="spinner spinner-dark" style="margin:0 auto;"></div>
+        </div>
+        <div class="panel-body no-pad" id="history-container" style="display:none;">
+          <div class="table-wrap">
+            <table aria-label="Blood stock inventory">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Blood Bank</th>
+                  <th>City</th>
+                  <th>Blood Group</th>
+                  <th>Units</th>
+                  <th>Status</th>
+                  <th>Last Updated</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="history-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- QUICK STOCK UPDATE MODAL (from history table) -->
+<div class="modal-overlay" id="quick-modal" role="dialog" aria-modal="true" aria-labelledby="quick-modal-title">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="quick-modal-title">Quick Stock Update</h2>
+      <button class="modal-close" onclick="closeQuickModal()" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body" style="padding-bottom:0;">
+      <p style="font-size:14px; color:var(--color-text-muted); margin-bottom:4px;" id="quick-modal-bank"></p>
+      <p style="font-size:13px; color:var(--color-text-muted); margin-bottom:16px;" id="quick-modal-bg-label"></p>
+      <div class="form-group">
+        <label for="quick-units">Units available <span class="required">*</span></label>
+        <input class="form-control" type="number" id="quick-units" min="0" placeholder="Enter units" />
+        <span class="field-error" id="quick-units-error"></span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" id="quick-save-btn" onclick="saveQuickStock()">Update Stock</button>
+      <button class="btn btn-ghost" onclick="closeQuickModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container" aria-live="polite"></div>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/bloodbank.js"></script>
+</body>
+</html>

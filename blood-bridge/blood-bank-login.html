@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blood Bank Login – Blood Bridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/forms.css" />
+</head>
+<body>
+
+<div class="auth-page">
+
+  <div class="auth-card">
+    <a class="auth-logo" href="index.html">
+      <span class="brand-icon" aria-hidden="true">🩸</span>
+      Blood Bridge
+    </a>
+
+    <div style="display:flex; align-items:center; justify-content:center; gap:6px; padding:4px 12px; background:var(--color-info-light); color:var(--color-info); border-radius:20px; font-size:12px; font-weight:700; letter-spacing:.05em; margin:0 auto 20px;">
+      🏥 BLOOD BANK PORTAL
+    </div>
+
+    <h1 class="auth-heading">Blood Bank Sign In</h1>
+    <p class="auth-subheading">Manage your blood bank stock and inventory</p>
+
+    <div id="login-alert" class="alert alert-danger" style="display:none; margin-bottom:16px;" role="alert"></div>
+
+    <form id="bb-login-form" novalidate>
+      <div class="form-group">
+        <label for="bb-email">Email <span class="required">*</span></label>
+        <input class="form-control" type="email" id="bb-email" placeholder="bloodbank@example.com" autocomplete="email" required />
+        <span class="field-error" id="bb-email-error"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="bb-password">Password <span class="required">*</span></label>
+        <div class="input-group">
+          <input class="form-control" type="password" id="bb-password" placeholder="Your password" autocomplete="current-password" required />
+          <span class="input-group-icon" id="toggle-bb-pwd" role="button" aria-label="Toggle password visibility" tabindex="0">👁</span>
+        </div>
+        <span class="field-error" id="bb-password-error"></span>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block btn-lg" id="bb-login-btn" style="margin-top:4px;">
+        Sign In to Blood Bank Portal
+      </button>
+    </form>
+
+    <div style="margin-top:20px; text-align:center; display:flex; flex-direction:column; gap:8px;">
+      <a href="login.html" style="font-size:13px; color:var(--color-text-muted);">← Back to regular login</a>
+      <a href="admin-login.html" style="font-size:13px; color:var(--color-text-muted);">Admin login →</a>
+    </div>
+  </div>
+
+  <div style="margin-top:16px; font-size:12px; color:var(--color-text-muted); text-align:center; max-width:360px;">
+    <strong>Demo mode:</strong> Use any email and password of 4+ characters.
+  </div>
+</div>
+
+<div id="toast-container" aria-live="polite"></div>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  document.getElementById('bb-login-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    clearAllErrors(this);
+    hideAlert('login-alert');
+
+    const emailOk = validateEmail('bb-email');
+    const passOk  = validateMinLength('bb-password', 4, 'Password');
+    if (!emailOk || !passOk) return;
+
+    const btn     = document.getElementById('bb-login-btn');
+    const restore = setButtonLoading(btn, 'Signing in…');
+    const email   = document.getElementById('bb-email').value.trim();
+    const pwd     = document.getElementById('bb-password').value;
+
+    const result = await apiLogin(email, pwd);
+    restore();
+
+    if (!result.ok) {
+      showAlert('login-alert', result.data?.message || 'Login failed.');
+      return;
+    }
+
+    // Set role to blood_bank for this portal
+    result.data.user.role = 'blood_bank';
+    saveSession(result.data.token, result.data.user);
+    showToast('Welcome to Blood Bank Portal!', 'success');
+    setTimeout(() => { window.location.href = 'blood-bank-dashboard.html'; }, 500);
+  });
+
+  initPasswordToggle('bb-password', 'toggle-bb-pwd');
+</script>
+</body>
+</html>

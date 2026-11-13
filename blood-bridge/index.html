@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BloodBridge | Connecting Lives</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/home.css" />
+</head>
+<body class="home-page">
+
+<!-- ══════════════════ NAVBAR ══════════════════ -->
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container navbar-inner">
+    <a class="navbar-brand" href="index.html">
+      <span class="bb-logo-text">Blood<span>Bridge</span></span>
+      <svg class="bb-logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M4 18 L10 10 L16 18 L20 14 L28 26" stroke="#c0152a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M28 20 C28 24.4 24.4 28 20 28 C15.6 28 12 24.4 12 20 C12 15 20 8 20 8 C20 8 28 15 28 20Z" fill="#c0152a"/>
+      </svg>
+    </a>
+
+    <ul class="navbar-nav" role="list">
+      <li><a class="nav-link active" href="index.html">Home</a></li>
+      <li><a class="nav-link" href="blood-banks.html">Find Blood</a></li>
+      <li><a class="nav-link" href="donor-register.html">Become a Donor</a></li>
+    </ul>
+
+    <div class="navbar-actions">
+      <a id="nav-login" class="btn btn-outline btn-sm" href="login.html">Log In</a>
+      <a class="btn btn-primary btn-sm" href="register.html">Sign Up</a>
+      <div id="nav-user-menu" style="display:none; align-items:center; gap:10px;">
+        <span style="font-size:14px; color:var(--color-text-muted);">Hello, <strong id="nav-user-name"></strong></span>
+        <button class="btn btn-ghost btn-sm" onclick="logout()">Log Out</button>
+      </div>
+    </div>
+
+    <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile nav overlay -->
+<div class="nav-overlay" id="nav-overlay" role="dialog" aria-label="Mobile navigation">
+  <a class="nav-link" href="index.html">Home</a>
+  <a class="nav-link" href="blood-banks.html">Find Blood</a>
+  <a class="nav-link" href="donor-register.html">Become a Donor</a>
+  <div class="navbar-actions" style="flex-direction:column; align-items:stretch; gap:10px; margin-top:12px;">
+    <a class="btn btn-outline" href="login.html">Log In</a>
+    <a class="btn btn-primary" href="register.html">Sign Up</a>
+  </div>
+</div>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section class="bb-hero" aria-labelledby="hero-heading">
+  <!-- Floating background particles -->
+  <div class="bb-particles" aria-hidden="true">
+    <span class="bb-particle"></span><span class="bb-particle"></span>
+    <span class="bb-particle"></span><span class="bb-particle"></span>
+    <span class="bb-particle"></span><span class="bb-particle"></span>
+  </div>
+
+  <div class="container bb-hero-inner">
+    <!-- Left column -->
+    <div class="bb-hero-left bb-reveal">
+      <div class="bb-hero-badge">
+        <span class="bb-badge-dot"></span> Live Blood Network Active
+      </div>
+
+      <h1 id="hero-heading" class="bb-hero-title">
+        <span class="bb-title-blood">Blood</span><span class="bb-title-bridge">Bridge</span>
+        <svg class="bb-hero-heartbeat" viewBox="0 0 60 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path class="bb-ecg-path" d="M2 20 L12 20 L18 6 L24 32 L30 14 L36 24 L42 20 L58 20" stroke="#c0152a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </h1>
+
+      <p class="bb-hero-tagline">
+        Connecting Donors. Supporting Patients. <span class="bb-tagline-accent">Saving Lives.</span>
+      </p>
+      <p class="bb-hero-desc">
+        A small act of kindness can make a big difference. Donate blood and help someone in need today.
+      </p>
+
+      <div class="bb-hero-actions">
+        <a class="btn btn-primary btn-lg bb-btn-donor bb-ripple" href="donor-register.html">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18" aria-hidden="true"><path d="M10 2C6.69 2 4 4.69 4 8c0 5 6 10 6 10s6-5 6-10c0-3.31-2.69-6-6-6zm0 8a2 2 0 110-4 2 2 0 010 4z"/></svg>
+          Register as Donor
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+        </a>
+        <a class="btn btn-outline btn-lg bb-btn-request bb-ripple" href="blood-request.html">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18" aria-hidden="true"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/></svg>
+          Request Blood
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+        </a>
+      </div>
+
+      <!-- Quick blood type search -->
+      <div class="bb-quick-search">
+        <p class="bb-quick-search-label">Quick search by blood type:</p>
+        <div class="bb-blood-types" role="group" aria-label="Blood type quick search">
+          <a class="bb-bt-chip" href="blood-banks.html?bg=A%2B">A+</a>
+          <a class="bb-bt-chip" href="blood-banks.html?bg=A-">A−</a>
+          <a class="bb-bt-chip" href="blood-banks.html?bg=B%2B">B+</a>
+          <a class="bb-bt-chip" href="blood-banks.html?bg=B-">B−</a>
+          <a class="bb-bt-chip bb-bt-chip--o" href="blood-banks.html?bg=O%2B">O+</a>
+          <a class="bb-bt-chip bb-bt-chip--o" href="blood-banks.html?bg=O-">O−</a>
+          <a class="bb-bt-chip" href="blood-banks.html?bg=AB%2B">AB+</a>
+          <a class="bb-bt-chip" href="blood-banks.html?bg=AB-">AB−</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right column – blood drop illustration (floating) -->
+    <div class="bb-hero-right" aria-hidden="true">
+      <div class="bb-give-hope">
+        <span>Give Blood…</span>
+        <span>Give Hope…</span>
+      </div>
+
+      <!-- Entire illustration floats up/down -->
+      <div class="bb-illus-wrap">
+
+        <!-- Outer ring (spins slowly) -->
+        <div class="bb-illus-ring bb-illus-ring--outer bb-spin-slow"></div>
+        <!-- Inner ring (spins reverse) -->
+        <div class="bb-illus-ring bb-illus-ring--inner bb-spin-reverse"></div>
+
+        <!-- Large red sphere -->
+        <div class="bb-illus-sphere bb-pulse-glow"></div>
+
+        <!-- Pink blood drop with cross + smile — centred over sphere -->
+        <div class="bb-illus-drop">
+          <svg viewBox="0 0 110 136" fill="none" xmlns="http://www.w3.org/2000/svg" width="110" height="136">
+            <!-- Drop shape -->
+            <path d="M55 8 C55 8 10 62 10 90 C10 117 30.1 130 55 130 C79.9 130 100 117 100 90 C100 62 55 8 55 8Z"
+                  fill="#f8c0c8"/>
+            <!-- White cross -->
+            <rect x="48" y="52" width="14" height="38" rx="5" fill="white"/>
+            <rect x="37" y="63" width="36" height="14" rx="5" fill="white"/>
+            <!-- Smile arc -->
+            <path d="M40 102 Q55 118 70 102" stroke="#8b0000" stroke-width="4" stroke-linecap="round" fill="none"/>
+          </svg>
+        </div>
+
+        <!-- Person with outstretched arms (caretaker silhouette) -->
+        <div class="bb-illus-person">
+          <svg viewBox="0 0 160 100" fill="none" xmlns="http://www.w3.org/2000/svg" width="160" height="100">
+            <!-- Head -->
+            <circle cx="80" cy="18" r="14" fill="rgba(192,21,42,0.35)"/>
+            <!-- Body -->
+            <path d="M62 36 Q80 28 98 36 L102 72 L58 72 Z" fill="rgba(192,21,42,0.35)"/>
+            <!-- Left arm reaching out -->
+            <path d="M62 44 Q38 52 18 60 Q12 62 10 70" stroke="rgba(192,21,42,0.4)" stroke-width="10"
+                  stroke-linecap="round" fill="none"/>
+            <!-- Left hand fingers -->
+            <circle cx="10" cy="72" r="5" fill="rgba(192,21,42,0.35)"/>
+            <circle cx="4"  cy="68" r="4" fill="rgba(192,21,42,0.3)"/>
+            <circle cx="16" cy="76" r="4" fill="rgba(192,21,42,0.3)"/>
+            <!-- Right arm reaching out -->
+            <path d="M98 44 Q122 52 142 60 Q148 62 150 70" stroke="rgba(192,21,42,0.4)" stroke-width="10"
+                  stroke-linecap="round" fill="none"/>
+            <!-- Right hand fingers -->
+            <circle cx="150" cy="72" r="5" fill="rgba(192,21,42,0.35)"/>
+            <circle cx="156" cy="68" r="4" fill="rgba(192,21,42,0.3)"/>
+            <circle cx="144" cy="76" r="4" fill="rgba(192,21,42,0.3)"/>
+          </svg>
+        </div>
+
+      </div><!-- /bb-illus-wrap -->
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FEATURE CARDS ══════════════════ -->
+<section class="bb-features" aria-label="Why donate blood">
+  <div class="container">
+    <div class="bb-section-header bb-reveal">
+      <h2 class="bb-section-title">Why <span style="color:#c0152a">BloodBridge</span>?</h2>
+      <p class="bb-section-sub">Every drop counts. Here's how we make donating and finding blood simple.</p>
+    </div>
+    <div class="bb-features-grid">
+
+      <div class="bb-feat-card bb-reveal">
+        <div class="bb-feat-icon bb-feat-icon--heart">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+            <path d="M12 21C12 21 3 14.5 3 8.5A5 5 0 0112 5.5 5 5 0 0121 8.5C21 14.5 12 21 12 21Z" fill="#c0152a" opacity=".15" stroke="#c0152a" stroke-width="1.5"/>
+            <path d="M6 11 L9 8 L11 10 L13 7 L17 13" stroke="#c0152a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 class="bb-feat-title">Save Lives</h3>
+        <p class="bb-feat-desc">Your donation can save up to 3 lives!</p>
+        <a class="bb-feat-link" href="donor-register.html">Become a donor →</a>
+      </div>
+
+      <div class="bb-feat-card bb-reveal" style="--reveal-delay:0.1s">
+        <div class="bb-feat-icon bb-feat-icon--people">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+            <circle cx="12" cy="7" r="3" fill="#c0152a" opacity=".2" stroke="#c0152a" stroke-width="1.5"/>
+            <circle cx="5" cy="9" r="2.2" fill="#c0152a" opacity=".2" stroke="#c0152a" stroke-width="1.3"/>
+            <circle cx="19" cy="9" r="2.2" fill="#c0152a" opacity=".2" stroke="#c0152a" stroke-width="1.3"/>
+            <path d="M6 20 C6 16 8.7 14 12 14 C15.3 14 18 16 18 20" stroke="#c0152a" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M2 20 C2 17.5 3.5 16 5 16" stroke="#c0152a" stroke-width="1.3" stroke-linecap="round"/>
+            <path d="M22 20 C22 17.5 20.5 16 19 16" stroke="#c0152a" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="bb-feat-title">Support Patients</h3>
+        <p class="bb-feat-desc">Be the reason someone gets a second chance.</p>
+        <a class="bb-feat-link" href="blood-request.html">Request blood →</a>
+      </div>
+
+      <div class="bb-feat-card bb-reveal" style="--reveal-delay:0.2s">
+        <div class="bb-feat-icon bb-feat-icon--drop">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+            <path d="M12 3 C12 3 5 10.5 5 15.5 A7 7 0 0019 15.5 C19 10.5 12 3 12 3Z" fill="#c0152a" opacity=".2" stroke="#c0152a" stroke-width="1.5"/>
+            <path d="M9 16 C9 14.3 10.3 13 12 13" stroke="#c0152a" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="bb-feat-title">Build a Healthier Community</h3>
+        <p class="bb-feat-desc">Together for a healthier tomorrow.</p>
+        <a class="bb-feat-link" href="blood-banks.html">Find blood banks →</a>
+      </div>
+
+      <div class="bb-feat-card bb-reveal" style="--reveal-delay:0.3s">
+        <div class="bb-feat-icon bb-feat-icon--shield">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+            <path d="M12 3 L20 7 V13 C20 17.4 16.4 21 12 21 C7.6 21 4 17.4 4 13 V7 L12 3Z" fill="#c0152a" opacity=".15" stroke="#c0152a" stroke-width="1.5"/>
+            <path d="M12 10 C12 10 9 12 9 14.5 A3 3 0 0015 14.5 C15 12 12 10 12 10Z" fill="#c0152a"/>
+          </svg>
+        </div>
+        <h3 class="bb-feat-title">Safe &amp; Reliable</h3>
+        <p class="bb-feat-desc">Trusted platform for blood donation and requests.</p>
+        <a class="bb-feat-link" href="register.html">Join now →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ HOW IT WORKS ══════════════════ -->
+<section class="bb-how" aria-label="How it works">
+  <div class="container">
+    <div class="bb-section-header bb-reveal">
+      <h2 class="bb-section-title">How It <span style="color:#c0152a">Works</span></h2>
+      <p class="bb-section-sub">Three simple steps to save a life or find the blood you need.</p>
+    </div>
+    <div class="bb-how-grid">
+      <div class="bb-how-step bb-reveal">
+        <div class="bb-how-num">01</div>
+        <div class="bb-how-icon">
+          <svg viewBox="0 0 32 32" fill="none" width="32" height="32"><circle cx="16" cy="10" r="5" stroke="#c0152a" stroke-width="2"/><path d="M6 28c0-5.5 4.5-10 10-10s10 4.5 10 10" stroke="#c0152a" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Create Profile</h3>
+        <p>Sign up and register as a donor or patient in under 2 minutes.</p>
+      </div>
+      <div class="bb-how-connector" aria-hidden="true">→</div>
+      <div class="bb-how-step bb-reveal" style="--reveal-delay:0.15s">
+        <div class="bb-how-num">02</div>
+        <div class="bb-how-icon">
+          <svg viewBox="0 0 32 32" fill="none" width="32" height="32"><circle cx="13" cy="13" r="7" stroke="#c0152a" stroke-width="2"/><path d="M22 22 L28 28" stroke="#c0152a" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Find or Request</h3>
+        <p>Search blood banks by city or submit a blood request to alert donors.</p>
+      </div>
+      <div class="bb-how-connector" aria-hidden="true">→</div>
+      <div class="bb-how-step bb-reveal" style="--reveal-delay:0.3s">
+        <div class="bb-how-num">03</div>
+        <div class="bb-how-icon">
+          <svg viewBox="0 0 32 32" fill="none" width="32" height="32"><path d="M16 4 C16 4 6 11 6 19 A10 10 0 0026 19 C26 11 16 4 16 4Z" stroke="#c0152a" stroke-width="2" fill="#c0152a" fill-opacity=".1"/><path d="M12 19 L15 22 L21 15" stroke="#c0152a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Connect &amp; Save</h3>
+        <p>Donors accept requests and coordinate directly with the hospital.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ RED BANNER ══════════════════ -->
+<div class="bb-banner" aria-label="Motivational banner">
+  <div class="bb-marquee-track" aria-hidden="true">
+    <div class="bb-marquee-inner">
+      <span>❤️ Donate Blood</span>
+      <span class="bb-marquee-dot">•</span>
+      <span>🩸 Spread Kindness</span>
+      <span class="bb-marquee-dot">•</span>
+      <span>💪 Make a Difference</span>
+      <span class="bb-marquee-dot">•</span>
+      <span>🏥 Save Lives Today</span>
+      <span class="bb-marquee-dot">•</span>
+      <span>❤️ Donate Blood</span>
+      <span class="bb-marquee-dot">•</span>
+      <span>🩸 Spread Kindness</span>
+      <span class="bb-marquee-dot">•</span>
+      <span>💪 Make a Difference</span>
+      <span class="bb-marquee-dot">•</span>
+      <span>🏥 Save Lives Today</span>
+      <span class="bb-marquee-dot">•</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer class="bb-footer" role="contentinfo">
+  <div class="container bb-footer-inner">
+    <span class="bb-footer-copy">© 2026 BloodBridge | Connecting Lives ❤️</span>
+    <div class="bb-footer-socials">
+      <a href="#" class="bb-social-btn" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+      </a>
+      <a href="#" class="bb-social-btn" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
+      <a href="#" class="bb-social-btn" aria-label="YouTube">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"/></svg>
+      </a>
+      <a href="#" class="bb-social-btn" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<div id="toast-container" aria-live="polite"></div>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script>
+/* ── Hamburger ─────────────────────────── */
+const hamburger = document.getElementById('hamburger');
+const navOverlay = document.getElementById('nav-overlay');
+if (hamburger && navOverlay) {
+  hamburger.addEventListener('click', () => {
+    const isOpen = navOverlay.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', isOpen);
+  });
+}
+
+/* ── Scroll-reveal ─────────────────────── */
+const revealEls = document.querySelectorAll('.bb-reveal');
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('bb-revealed');
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+revealEls.forEach(el => revealObs.observe(el));
+
+/* ── Ripple effect on buttons ──────────── */
+document.querySelectorAll('.bb-ripple').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    const rect = this.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    ripple.className = 'bb-ripple-wave';
+    ripple.style.left = (e.clientX - rect.left) + 'px';
+    ripple.style.top  = (e.clientY - rect.top) + 'px';
+    this.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+  });
+});
+
+/* ── Quick blood type search pre-fill ─── */
+document.querySelectorAll('.bb-bt-chip').forEach(chip => {
+  chip.addEventListener('click', function(e) {
+    e.preventDefault();
+    const url = new URL(this.href, location.href);
+    const bg = url.searchParams.get('bg');
+    sessionStorage.setItem('bb_prefill_bg', bg);
+    location.href = this.href;
+  });
+});
+
+/* ── Navbar scroll shrink ──────────────── */
+const navbar = document.querySelector('.navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('navbar--scrolled', window.scrollY > 40);
+}, { passive: true });
+</script>
+</body>
+</html>
